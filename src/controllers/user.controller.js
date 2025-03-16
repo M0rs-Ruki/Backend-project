@@ -17,7 +17,6 @@ const registerUser = asyncHandler(async (req, res) => {
     // return res
 
     const { username, fullName, email, password } = req.body;
-    console.log(req.body);
 
     if ([username, fullName, email, password].some((field) => field?.trim() === '')) {
         throw new apiError(400, 'Please fill in all fields');
@@ -32,7 +31,14 @@ const registerUser = asyncHandler(async (req, res) => {
 
     const avatarLocalPath = req.files?.avatar[0]?.path;
 
-    const coverImageLocalPath = req.files?.cover[0]?.path;
+    // const coverImageLocalPath = req.files?.cover[0]?.path;
+
+
+    let coverImageLocalPath;
+    if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0 ){
+        coverImageLocalPath = req.files.coverImage[0].path;
+    }
+
 
     if (!avatarLocalPath) {
         throw new apiError(400, 'Please upload an avatar');
@@ -45,12 +51,11 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new apiError(500, 'Error while uploading avatar');
     }
 
-    console.log("mors");
     const user = await User.create({
         username: username.toLowerCase(),
         fullName,
         avatar: avatar.url,
-        coverImage: coverImage?.url || "",
+        coverImage: coverImage?.url || null ,
         email,
         password,
     });

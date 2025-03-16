@@ -8,8 +8,8 @@ app.use(cors({
     origin: process.env.CORA_ORIGIN,
     Credential:true,
 }));
-app.use(express.json({limite: "16kb"}));
-app.use(express.urlencoded({extends: true, limit: "16kb"}));
+app.use(express.json({limite: "200kb"}));
+app.use(express.urlencoded({extends: true, limit: "200kb"}));
 app.use(express.static("public"));
 app.use(cookieParser());
 
