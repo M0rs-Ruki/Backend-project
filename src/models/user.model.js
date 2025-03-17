@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { asyncHandler } from "../utils/asyncHandler";
 
 const userSchema = new Schema({
     username: {
@@ -42,6 +43,7 @@ const userSchema = new Schema({
     refreshToken: {
         type: String,
     }
+    
 }, { timestamps: true });
 
 userSchema.pre("save", async function (next) {
@@ -74,6 +76,10 @@ userSchema.methods.generateRefreshToken = function () {
     process.env.REFRESH_TOKEN_SECRET, {
         expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
     });
+
+    const logoutUser = asyncHandler(async( req, res ) => {
+        
+    })
 }
 
 export const User = mongoose.model("User", userSchema);
