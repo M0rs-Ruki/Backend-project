@@ -6,23 +6,27 @@ import { apiResponse } from "../utils/apiResponse.js";
 
 
 
-const generateAccessAndRefereshTokens =  async(userId)
-try {
-    const user = await User.findById(userId)
-    const accessToken = user.generateAccessToken()
-    const refreshToken = user.generateRefreshToken()
+const generateAccessAndRefereshTokens = async(userId) => {
+    try {
+        const user = await User.findById(userId)
+        const accessToken = user.generateAccessToken()
+        const refreshToken = user.generateRefreshToken()
 
-    user.refreshToken  =refreshToken
-    user.save({ ValidateBeforSave: false })
-    return { accessToken, refreshToken }
+        user.refreshToken  = refreshToken
+        await user.save({ validateBeforeSave: false })
 
-} catch (error) {
-    throw new apiError(500, " Somthing went wrong whill generating referesh token")
+        return { accessToken, refreshToken }
+
+
+    } catch (error) {
+        
+        throw new apiError(500, " Somthing went wrong whill generating referesh token")
+    }
 }
 
 const registerUser = asyncHandler( async (req, res) => {
 
-        // get user details from frontend
+    // get user details from frontend
     // validation - not empty
     // check if user already exists: username, email
     // check for images, check for avatar
@@ -95,7 +99,7 @@ const loginUser = asyncHandler( async(req, res) => {
 
     const { email, username , password} = req.body;
 
-    if (!email || !username) {
+    if ( !(email || username)) {
         throw new apiError(400, "Please provide email or username")
     }
 
