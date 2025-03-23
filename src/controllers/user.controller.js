@@ -4,7 +4,6 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { apiError } from "../utils/apierror.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import jwt from "jsonwebtoken";
-import { Subscription } from "../models/Subscription.model.js";
 import mongoose from "mongoose";
 
 
